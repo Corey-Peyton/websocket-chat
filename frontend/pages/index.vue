@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <layout-navbar></layout-navbar>
+    <chat></chat>
   </div>
 </template>
 
@@ -8,15 +9,20 @@
 export default {}
 </script>
 
-<style>
-* {
-  margin: 0;
+<style lang="scss">
+*,
+*::before,
+*::after {
   padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
-.container {
+body {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: #576570;
 }
 </style>
