@@ -1,18 +1,17 @@
 <template>
-  <div class="messages">
-    <chat-messages-user-info />
-  </div>
+  <div class="users-bar"></div>
 </template>
 
 <script>
 export default {
-  name: 'Messages',
+  name: 'ChatUsersBar',
 }
 </script>
 
 <style lang="scss" scoped>
-.messages {
+.users-bar {
+  background-color: #fff;
+  width: 395px;
   height: 100%;
-  width: 880px;
 }
 </style>

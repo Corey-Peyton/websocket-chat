@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <layout-navbar></layout-navbar>
-    <chat></chat>
+    <layout-navbar />
+    <chat />
   </div>
 </template>
 
