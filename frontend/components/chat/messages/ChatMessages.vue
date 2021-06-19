@@ -1,6 +1,7 @@
 <template>
   <div class="messages">
     <chat-messages-user-info />
+    <chat-messages-list />
   </div>
 </template>
 
