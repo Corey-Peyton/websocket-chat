@@ -1,10 +1,30 @@
 <template>
-  <div class="message">
-    <section class="message__header">
-      <span>{{ message.sender }}</span>
-      <span>{{ formattedDate }}</span>
+  <div :class="userMessage ? 'user-message' : 'interlocutor-message'">
+    <section
+      :class="
+        userMessage ? 'user-message__header' : 'interlocutor-message__header'
+      "
+    >
+      <span
+        :class="
+          userMessage
+            ? 'user-message__header__username'
+            : 'interlocutor-message__header__username'
+        "
+        >{{ message.sender }}</span
+      >
+      <span
+        :class="
+          userMessage
+            ? 'user-message__header__time'
+            : 'interlocutor-message__header__time'
+        "
+        >{{ formattedDate }}</span
+      >
     </section>
-    <section class="message__body">
+    <section
+      :class="userMessage ? 'user-message__body' : 'interlocutor-message__body'"
+    >
       {{ message.content }}
     </section>
   </div>
@@ -20,6 +40,9 @@ export default {
     },
   },
   computed: {
+    userMessage() {
+      return this.$store.state.user.username === this.message.sender
+    },
     formattedDate() {
       return this.message.time.toLocaleString('en-UA', {
         hour: 'numeric',
@@ -32,10 +55,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.message {
+@mixin message(
+  $isUser: false,
+  $float: left,
+  $headerColor: #becbd9,
+  $usernameColor: #203245,
+  $timeColor: #9aa8b7
+) {
   height: 80px;
   width: 640px;
   margin: 0 20px 20px 20px;
+  float: $float;
 
   &__header {
     height: 35px;
@@ -43,9 +73,18 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #becbd9;
+    background-color: $headerColor;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    font-family: 'OpenSans', sans-serif;
+
+    &__username {
+      color: $usernameColor;
+    }
+
+    &__time {
+      color: $timeColor;
+    }
   }
 
   &__body {
@@ -55,6 +94,7 @@ export default {
     position: relative;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    font-family: 'OpenSans-Semibold', sans-serif;
 
     &::after {
       content: '';
@@ -63,9 +103,28 @@ export default {
       position: absolute;
       transform: rotate(45deg);
       bottom: 20px;
-      left: -5px;
       background-color: #f4f8fb;
+
+      @if $isUser {
+        right: -5px;
+      } @else {
+        left: -5px;
+      }
     }
   }
+}
+
+.interlocutor-message {
+  @include message;
+}
+
+.user-message {
+  @include message(
+    $isUser: true,
+    $float: right,
+    $headerColor: #f0cbb3,
+    $usernameColor: #703a18,
+    $timeColor: #bba08e
+  );
 }
 </style>

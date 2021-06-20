@@ -11,36 +11,10 @@
 <script>
 export default {
   name: 'MessagesList',
-  data() {
-    return {
-      messages: [
-        {
-          sender: 'Patrick',
-          content: 'Hello',
-          time: new Date(),
-        },
-        {
-          sender: 'Spanch Bob',
-          content: 'Bye',
-          time: new Date(),
-        },
-        {
-          sender: 'Patrick',
-          content: 'How is Squidwart?',
-          time: new Date(),
-        },
-        {
-          sender: 'Spanch Bob',
-          content: 'He is okey',
-          time: new Date(),
-        },
-        {
-          sender: 'Patrick',
-          content: 'That is good',
-          time: new Date(),
-        },
-      ],
-    }
+  computed: {
+    messages() {
+      return this.$store.state.message.messages
+    },
   },
 }
 </script>
