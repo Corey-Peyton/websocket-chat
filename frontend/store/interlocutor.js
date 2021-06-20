@@ -18,7 +18,7 @@ export const state = () => ({
     {
       username: 'Ignore bot',
       avatar: 'ignorebot.png',
-      isOnline: true,
+      isOnline: false,
     },
   ],
   currentInterlocutorUsername: null,

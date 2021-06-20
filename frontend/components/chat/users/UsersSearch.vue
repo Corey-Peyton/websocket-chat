@@ -1,12 +1,24 @@
 <template>
   <section class="users-search">
-    <input class="users-search__input" type="text" placeholder="Search..." />
+    <input
+      class="users-search__input"
+      type="text"
+      placeholder="Search..."
+      :value="usernameFilter"
+      @input="$emit('setUsernameFilter', $event.target.value)"
+    />
   </section>
 </template>
 
 <script>
 export default {
   name: 'UsersSearch',
+  props: {
+    usernameFilter: {
+      type: String,
+      required: true,
+    },
+  },
 }
 </script>
 

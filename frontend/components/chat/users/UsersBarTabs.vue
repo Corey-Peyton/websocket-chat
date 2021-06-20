@@ -2,15 +2,15 @@
   <section class="users-bar-tabs">
     <button
       class="users-bar-tabs__button"
-      :class="isOnlineTab ? null : 'users-bar-tabs__button-inactive'"
-      @click="isOnlineTab = true"
+      :class="onlineFilter ? null : 'users-bar-tabs__button-inactive'"
+      @click="$emit('setOnlineFilter', true)"
     >
       Online
     </button>
     <button
       class="users-bar-tabs__button"
-      :class="isOnlineTab ? 'users-bar-tabs__button-inactive' : null"
-      @click="isOnlineTab = false"
+      :class="onlineFilter ? 'users-bar-tabs__button-inactive' : null"
+      @click="$emit('setOnlineFilter', false)"
     >
       All
     </button>
@@ -20,10 +20,11 @@
 <script>
 export default {
   name: 'UsersBarTabs',
-  data() {
-    return {
-      isOnlineTab: true,
-    }
+  props: {
+    onlineFilter: {
+      type: Boolean,
+      required: true,
+    },
   },
 }
 </script>

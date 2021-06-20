@@ -11,9 +11,10 @@
 <script>
 export default {
   name: 'UsersList',
-  computed: {
-    interlocutors() {
-      return this.$store.state.interlocutor.interlocutors
+  props: {
+    interlocutors: {
+      type: Array,
+      required: true,
     },
   },
 }
