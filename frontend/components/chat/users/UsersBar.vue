@@ -2,6 +2,7 @@
   <div class="users-bar">
     <chat-users-bar-tabs />
     <chat-users-list />
+    <chat-users-search />
   </div>
 </template>
 

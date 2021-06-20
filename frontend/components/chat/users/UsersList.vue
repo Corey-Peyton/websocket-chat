@@ -24,5 +24,8 @@ export default {
   margin-top: 5px;
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
+  height: 530px;
+  overflow-y: auto;
 }
 </style>
