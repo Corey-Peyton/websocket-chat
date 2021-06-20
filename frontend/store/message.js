@@ -32,3 +32,18 @@ export const state = () => ({
     },
   ],
 })
+
+export const mutations = {
+  addMessage(state, payload) {
+    state.messages = [...state.messages, payload.message]
+  },
+}
+
+export const actions = {
+  addMessage({ commit }, payload) {
+    commit({
+      type: 'addMessage',
+      message: payload.message,
+    })
+  },
+}

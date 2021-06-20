@@ -1,17 +1,32 @@
 <template>
   <div class="messages-input-container">
     <input
+      v-model="messageContent"
       class="messages-input-container__input"
       type="text"
       placeholder="Start chatting!"
+      @keyup.enter="sendMessage"
     />
-    <button class="messages-input-container__send-button">Send message</button>
+    <button class="messages-input-container__send-button" @click="sendMessage">
+      Send message
+    </button>
   </div>
 </template>
 
 <script>
 export default {
   name: 'MessagesInput',
+  data() {
+    return {
+      messageContent: '',
+    }
+  },
+  methods: {
+    sendMessage() {
+      this.$emit('sendMessage', this.messageContent)
+      this.messageContent = ''
+    },
+  },
 }
 </script>
 

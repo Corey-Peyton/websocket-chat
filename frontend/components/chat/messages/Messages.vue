@@ -2,7 +2,7 @@
   <div class="messages">
     <chat-messages-user-info :interlocutor="interlocutor" />
     <chat-messages-list v-if="interlocutor" :messages="messages" />
-    <chat-messages-input v-if="interlocutor" />
+    <chat-messages-input v-if="interlocutor" @sendMessage="sendMessage" />
   </div>
 </template>
 
@@ -25,11 +25,29 @@ export default {
     messages() {
       const interlocutorUsername =
         this.$store.state.interlocutor.currentInterlocutorUsername
-      return this.$store.state.message.messages.filter(
-        (message) =>
-          message.sender === interlocutorUsername ||
-          message.receiver === interlocutorUsername
-      )
+      return this.$store.state.message.messages
+        .filter(
+          (message) =>
+            message.sender === interlocutorUsername ||
+            message.receiver === interlocutorUsername
+        )
+        .sort((a, b) => a < b)
+    },
+  },
+  methods: {
+    sendMessage(content) {
+      const sender = this.$store.state.user.username
+      const receiver =
+        this.$store.state.interlocutor.currentInterlocutorUsername
+
+      const message = {
+        sender,
+        receiver,
+        content,
+        time: new Date(),
+      }
+
+      this.$store.dispatch({ type: 'message/addMessage', message })
     },
   },
 }
