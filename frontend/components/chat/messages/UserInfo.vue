@@ -23,6 +23,7 @@ export default {
   background-color: #becbd9;
   height: 170px;
   display: flex;
+  margin-bottom: 20px;
 
   &__avatar {
     height: 170px;

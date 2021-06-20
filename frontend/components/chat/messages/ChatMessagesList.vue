@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="chat-messages-list">
     <chat-messages-item
       v-for="(message, index) in messages"
       :key="index"
@@ -24,8 +24,30 @@ export default {
           content: 'Bye',
           time: new Date(),
         },
+        {
+          sender: 'Patrick',
+          content: 'How is Squidwart?',
+          time: new Date(),
+        },
+        {
+          sender: 'Spanch Bob',
+          content: 'He is okey',
+          time: new Date(),
+        },
+        {
+          sender: 'Patrick',
+          content: 'That is good',
+          time: new Date(),
+        },
       ],
     }
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.chat-messages-list {
+  overflow-y: auto;
+  height: 385px;
+}
+</style>

@@ -2,6 +2,7 @@
   <div class="messages">
     <chat-messages-user-info />
     <chat-messages-list />
+    <chat-messages-input />
   </div>
 </template>
 

@@ -35,7 +35,7 @@ export default {
 .message {
   height: 80px;
   width: 640px;
-  margin: 20px;
+  margin: 0 20px 20px 20px;
 
   &__header {
     height: 35px;
