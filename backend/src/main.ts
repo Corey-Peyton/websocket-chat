@@ -7,7 +7,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   config({ path: '.env' });
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { cors: true });
   app.useStaticAssets(join(__dirname, '..', '..', 'client'));
   await app.listen(3000);
 }
