@@ -1,5 +1,9 @@
 <template>
-  <div class="users-item">
+  <div
+    class="users-item"
+    :class="isActiveInterlocutor ? 'users-item__active' : null"
+    @click="onClick"
+  >
     <div class="users-item__avatar">
       <img :src="avatar" />
       <img class="users-item__avatar__status-icon" :src="statusIcon" />
@@ -33,6 +37,22 @@ export default {
       const icon = this.user.isOnline ? 'online.png' : 'offline.png'
       return require(`@/assets/images/${icon}`)
     },
+    isActiveInterlocutor() {
+      return (
+        this.$store.state.interlocutor.currentInterlocutorUsername ===
+        this.user.username
+      )
+    },
+  },
+  methods: {
+    onClick() {
+      this.$store.commit({
+        type: 'interlocutor/setCurrentInterlocutorUsername',
+        username: this.user.username,
+      })
+
+      this.isActiveInterlocutor = true
+    },
   },
 }
 </script>
@@ -41,8 +61,8 @@ export default {
 .users-item {
   display: flex;
   width: 100%;
-  margin: 5px 15px;
-  max-height: 60px;
+  padding: 5px 15px;
+  max-height: 70px;
 
   &__avatar {
     height: 60px;
@@ -83,6 +103,10 @@ export default {
       -webkit-box-orient: vertical;
       word-break: break-all;
     }
+  }
+
+  &__active {
+    background-color: #f8f8f8;
   }
 }
 </style>

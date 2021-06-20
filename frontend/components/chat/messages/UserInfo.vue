@@ -1,29 +1,37 @@
 <template>
-  <div class="user-info">
-    <img
-      class="user-info__avatar"
-      src="https://i.pinimg.com/originals/b1/6f/22/b16f228b5dec74c4b870ed89fedde939.png"
-      alt="User avatar"
-    />
-    <section class="user-info__content">
-      <span class="user-info__content__name">Reverse bot</span>
-      <span class="user-info__content__description">Some description</span>
-    </section>
+  <div class="user-info-container">
+    <div v-if="interlocutor" class="user-info">
+      <img class="user-info__avatar" :src="avatar" alt="User avatar" />
+      <section class="user-info__content">
+        <span class="user-info__content__name">{{
+          interlocutor.username
+        }}</span>
+        <span class="user-info__content__description">Some description</span>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'UserInfo',
+  props: {
+    interlocutor: {
+      type: [Object, null],
+      default: null,
+    },
+  },
+  computed: {
+    avatar() {
+      return require(`@/assets/images/${this.interlocutor.avatar}`)
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .user-info {
-  background-color: #becbd9;
-  height: 170px;
   display: flex;
-  margin-bottom: 20px;
 
   &__avatar {
     height: 170px;
@@ -47,5 +55,11 @@ export default {
       color: #354149;
     }
   }
+}
+
+.user-info-container {
+  background-color: #becbd9;
+  height: 170px;
+  margin-bottom: 20px;
 }
 </style>

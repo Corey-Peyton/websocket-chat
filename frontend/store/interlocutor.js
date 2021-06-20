@@ -1,4 +1,4 @@
-export default () => ({
+export const state = () => ({
   interlocutors: [
     {
       username: 'Reverse bot',
@@ -21,4 +21,11 @@ export default () => ({
       isOnline: true,
     },
   ],
+  currentInterlocutorUsername: null,
 })
+
+export const mutations = {
+  setCurrentInterlocutorUsername(state, payload) {
+    state.currentInterlocutorUsername = payload.username
+  },
+}

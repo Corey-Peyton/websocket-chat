@@ -1,4 +1,4 @@
-export default () => ({
+export const state = () => ({
   messages: [
     {
       sender: 'Sponge Bob',
