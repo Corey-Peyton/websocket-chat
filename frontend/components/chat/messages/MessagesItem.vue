@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'ChatMessagesItem',
+  name: 'MessagesItem',
   props: {
     message: {
       type: Object,

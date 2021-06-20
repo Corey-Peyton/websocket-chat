@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'ChatMessagesList',
+  name: 'MessagesList',
   data() {
     return {
       messages: [

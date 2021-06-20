@@ -15,6 +15,7 @@ export default {
 <style lang="scss" scoped>
 .messages {
   height: 100%;
-  width: 880px;
+  width: 100%;
+  min-width: 880px;
 }
 </style>

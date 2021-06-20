@@ -11,7 +11,7 @@ export default {
 <style lang="scss" scoped>
 .users-bar {
   background-color: #fff;
-  width: 395px;
+  min-width: 260px;
   height: 100%;
 }
 </style>

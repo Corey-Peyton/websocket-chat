@@ -16,6 +16,7 @@ export default {
   display: flex;
   margin: 20px 80px 50px 80px;
   height: 650px;
+  min-width: 880px;
   background-color: #d7dfe7;
 }
 </style>

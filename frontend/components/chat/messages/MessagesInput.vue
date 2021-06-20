@@ -18,10 +18,13 @@ export default {
 <style lang="scss" scoped>
 .messages-input-container {
   display: flex;
-  margin: 15px 30px 0 10px;
+  margin-top: 15px;
+  padding: 0 30px 0 10px;
+  width: 100%;
 
   &__input {
-    width: 630px;
+    min-width: 630px;
+    width: 100%;
     height: 35px;
     border-radius: 5px;
     border: none;
