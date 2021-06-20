@@ -1,7 +1,7 @@
 <template>
   <div class="messages">
     <chat-messages-user-info :interlocutor="interlocutor" />
-    <chat-messages-list v-if="interlocutor" />
+    <chat-messages-list v-if="interlocutor" :messages="messages" />
     <chat-messages-input v-if="interlocutor" />
   </div>
 </template>
@@ -20,6 +20,16 @@ export default {
         )
 
       return null
+    },
+
+    messages() {
+      const interlocutorUsername =
+        this.$store.state.interlocutor.currentInterlocutorUsername
+      return this.$store.state.message.messages.filter(
+        (message) =>
+          message.sender === interlocutorUsername ||
+          message.receiver === interlocutorUsername
+      )
     },
   },
 }

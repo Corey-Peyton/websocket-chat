@@ -2,31 +2,31 @@ export const state = () => ({
   messages: [
     {
       sender: 'Sponge Bob',
-      receiver: 'Patrick',
+      receiver: 'Reverse bot',
       content: 'Some message content',
       time: new Date(),
     },
     {
-      sender: 'Patrick',
+      sender: 'Reverse bot',
       receiver: 'Sponge Bob',
       content: 'Another content',
       time: new Date(),
     },
     {
       sender: 'Sponge Bob',
-      receiver: 'Patrick',
+      receiver: 'Echo bot',
+      content: 'Some message content',
+      time: new Date(),
+    },
+    {
+      sender: 'Ignore bot',
+      receiver: 'Sponge Bob',
       content: 'Some message content',
       time: new Date(),
     },
     {
       sender: 'Sponge Bob',
-      receiver: 'Patrick',
-      content: 'Some message content',
-      time: new Date(),
-    },
-    {
-      sender: 'Patrick',
-      receiver: 'Sponge Bob',
+      receiver: 'Spam bot',
       content: 'Another content',
       time: new Date(),
     },

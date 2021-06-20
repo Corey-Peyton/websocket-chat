@@ -50,8 +50,6 @@ export default {
         type: 'interlocutor/setCurrentInterlocutorUsername',
         username: this.user.username,
       })
-
-      this.isActiveInterlocutor = true
     },
   },
 }

@@ -11,9 +11,10 @@
 <script>
 export default {
   name: 'MessagesList',
-  computed: {
-    messages() {
-      return this.$store.state.message.messages
+  props: {
+    messages: {
+      type: Array,
+      required: true,
     },
   },
 }
