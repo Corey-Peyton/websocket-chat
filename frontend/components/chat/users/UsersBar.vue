@@ -1,6 +1,7 @@
 <template>
   <div class="users-bar">
     <chat-users-bar-tabs />
+    <chat-users-list />
   </div>
 </template>
 
