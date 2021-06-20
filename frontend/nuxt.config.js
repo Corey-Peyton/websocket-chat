@@ -1,4 +1,7 @@
 export default {
+  server: {
+    port: 4004,
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'frontend',
@@ -17,7 +20,7 @@ export default {
   css: ['@/assets/main.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['@/plugins/socket.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
