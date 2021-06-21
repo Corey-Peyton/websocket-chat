@@ -8,15 +8,15 @@ export class IdentificatorService {
       min: 48,
       max: 57,
     },
-    // Upper case letters
-    {
-      min: 65,
-      max: 90,
-    },
     // Lower case letters
     {
       min: 97,
       max: 122,
+    },
+    // Upper case letters
+    {
+      min: 65,
+      max: 90,
     },
   ];
 
@@ -24,7 +24,7 @@ export class IdentificatorService {
     let id = '';
 
     for (let i = 0; i < length; i++) {
-      const rangeIndex: number = Math.floor(
+      const rangeIndex: number = Math.round(
         Math.random() * (this._alphaNumericRanges.length - 1),
       );
 
