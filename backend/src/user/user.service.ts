@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { IdentificatorService } from 'src/infrastructure/identificator.service';
 import { UserRepository } from './user.repository';
 import { User } from './dto/User';
@@ -6,7 +6,7 @@ import { UserStatus } from './dto/UserStatus';
 import { UserConnection } from './dto/UserConnection';
 
 @Injectable()
-export class UserService {
+export class UserService implements OnApplicationBootstrap {
   private _usernameLength = 7;
   private _defaultAvatar = 'default.png';
 
@@ -14,6 +14,11 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly identificatorService: IdentificatorService,
   ) {}
+
+  // Remove connections from the last session
+  async onApplicationBootstrap() {
+    await this.userRepository.deleteUserConnections();
+  }
 
   async createUser(): Promise<User> {
     // Generate username

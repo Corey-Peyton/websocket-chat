@@ -153,6 +153,18 @@ export class UserRepository {
     await this.databaseService.query(queryConfig);
   }
 
+  async deleteUserConnections() {
+    const sql = `
+      delete from ${USERS_CONNECTIONS_TABLE}
+    `;
+
+    const queryConfig: QueryConfig = {
+      text: sql,
+    };
+
+    await this.databaseService.query(queryConfig);
+  }
+
   // Users online statuses queries
   async insertUserStatus(userStatus: UserStatus): Promise<void> {
     const sql = `
