@@ -31,7 +31,7 @@ export default {
             message.sender === interlocutorUsername ||
             message.receiver === interlocutorUsername
         )
-        .sort((a, b) => a < b)
+        .sort((a, b) => a.sentAt < b.sentAt)
     },
   },
   methods: {
@@ -44,9 +44,10 @@ export default {
         sender,
         receiver,
         content,
-        time: new Date(),
+        sentAt: new Date(),
       }
 
+      this.$socket.emit('message', message)
       this.$store.dispatch({ type: 'message/addMessage', message })
     },
   },

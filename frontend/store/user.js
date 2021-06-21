@@ -1,3 +1,9 @@
 export const state = () => ({
-  username: 'Sponge Bob',
+  username: null,
 })
+
+export const mutations = {
+  setUsername(state, payload) {
+    state.username = payload.username
+  },
+}

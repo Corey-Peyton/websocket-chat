@@ -7,6 +7,7 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { Message } from 'src/message/dto/Message';
 import { WebsocketService } from './websocket.service';
 
 @WebSocketGateway()
@@ -19,9 +20,8 @@ export class WebsocketGateway
   server: Server;
 
   @SubscribeMessage('message')
-  echoMessage(@MessageBody() data: any) {
-    console.log('Data:', data);
-    return data;
+  handleMessage(@MessageBody() message: Message) {
+    this.websocketService.onMessage(this.server, message);
   }
 
   handleConnection(client: Socket) {

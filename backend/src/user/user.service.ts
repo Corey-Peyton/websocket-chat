@@ -64,6 +64,12 @@ export class UserService {
     await this.userRepository.updateUserStatus(userStatus);
   }
 
+  async findUserConnectionByUsername(
+    username: string,
+  ): Promise<UserConnection> {
+    return await this.userRepository.selectUserConnectionByUsername(username);
+  }
+
   async createUserConnection(
     username: string,
     connectionId: string,

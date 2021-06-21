@@ -44,7 +44,7 @@ export default {
       return this.$store.state.user.username === this.message.sender
     },
     formattedDate() {
-      return this.message.time.toLocaleString('en-UA', {
+      return this.message.sentAt.toLocaleString('en-UA', {
         hour: 'numeric',
         minute: 'numeric',
         hour12: true,

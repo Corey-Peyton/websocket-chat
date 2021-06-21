@@ -48,8 +48,8 @@ export class UserRepository {
   async selectUserByConnectionId(connectionId: string): Promise<User> {
     const sql = `
       select 
-        u.username,
-        u.avatar
+        u.username as "username",
+        u.avatar as "avatar"
       from ${USERS_TABLE} u
         inner join ${USERS_CONNECTIONS_TABLE} uc
           on u.username = uc.username
@@ -98,13 +98,33 @@ export class UserRepository {
     await this.databaseService.query(queryConfig);
   }
 
+  async selectUserConnectionByUsername(
+    username: string,
+  ): Promise<UserConnection> {
+    const sql = `
+    select 
+      uc.username as "username",
+      uc.connection_id as "connectionId"
+    from ${USERS_CONNECTIONS_TABLE} uc
+    where uc.username = $1
+  `;
+
+    const queryConfig: QueryConfig = {
+      text: sql,
+      values: [username],
+    };
+
+    const queryResult = await this.databaseService.query(queryConfig);
+    if (queryResult.rowCount) return queryResult.rows[0];
+  }
+
   async selectUserConnectionByConnectionId(
     connectionId: string,
   ): Promise<UserConnection> {
     const sql = `
       select 
-        uc.username,
-        uc.connection_id
+        uc.username as "username",
+        uc.connection_id as "connectionId"
       from ${USERS_CONNECTIONS_TABLE} uc
       where uc.connection_id = $1
     `;

@@ -19,9 +19,11 @@ export const mutations = {
       payload.interlocutor,
     ]
   },
-  deleteInterlocutor(state, payload) {
-    state.interlocutors = state.interlocutors.filter(
-      (interlocutor) => interlocutor.username !== payload.interlocutor.username
+  setOffline(state, payload) {
+    state.interlocutors = state.interlocutors.map((interlocutor) =>
+      interlocutor.username === payload.username
+        ? { ...interlocutor, isOnline: false }
+        : interlocutor
     )
   },
 }

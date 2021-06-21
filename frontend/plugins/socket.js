@@ -12,6 +12,11 @@ export default ({ store }, inject) => {
     const { username, avatar } = user
     localStorage.setItem('username', username)
     localStorage.setItem('avatar', avatar)
+
+    store.commit({
+      type: 'user/setUsername',
+      username,
+    })
   })
 
   socket.on('interlocutors', (interlocutors) => {
@@ -30,8 +35,22 @@ export default ({ store }, inject) => {
 
   socket.on('interlocutor_disconnected', (interlocutor) => {
     store.commit({
-      type: 'interlocutor/deleteInterlocutor',
-      interlocutor,
+      type: 'interlocutor/setOffline',
+      username: interlocutor.username,
+    })
+  })
+
+  socket.on('messages', (messages) => {
+    store.commit({
+      type: 'message/loadMessages',
+      messages,
+    })
+  })
+
+  socket.on('message', (message) => {
+    store.commit({
+      type: 'message/addMessage',
+      message,
     })
   })
 
