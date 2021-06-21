@@ -4,13 +4,16 @@ import {
   WebSocketGateway,
   WebSocketServer,
   OnGatewayConnection,
+  OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { UserService } from 'src/user/user.service';
+import { WebsocketService } from './websocket.service';
 
 @WebSocketGateway()
-export class WebsocketGateway implements OnGatewayConnection {
-  constructor(private readonly userService: UserService) {}
+export class WebsocketGateway
+  implements OnGatewayConnection, OnGatewayDisconnect
+{
+  constructor(private readonly websocketService: WebsocketService) {}
 
   @WebSocketServer()
   server: Server;
@@ -22,7 +25,10 @@ export class WebsocketGateway implements OnGatewayConnection {
   }
 
   handleConnection(client: Socket) {
-    const user = this.userService.createUser();
-    console.log(user);
+    this.websocketService.onConnect(client);
+  }
+
+  handleDisconnect(client: Socket) {
+    this.websocketService.onDisconnect(client);
   }
 }

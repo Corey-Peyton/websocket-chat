@@ -45,6 +45,26 @@ export class UserRepository {
     if (queryResult.rowCount) return queryResult.rows[0];
   }
 
+  async selectUserByConnectionId(connectionId: string): Promise<User> {
+    const sql = `
+      select 
+        u.username,
+        u.avatar
+      from ${USERS_TABLE} u
+        inner join ${USERS_CONNECTIONS_TABLE} uc
+          on u.username = uc.username
+      where uc.connection_id = $1
+    `;
+
+    const queryConfig: QueryConfig = {
+      text: sql,
+      values: [connectionId],
+    };
+
+    const queryResult = await this.databaseService.query(queryConfig);
+    if (queryResult.rowCount) return queryResult.rows[0];
+  }
+
   async selectUsersWithStatus(): Promise<User[]> {
     const sql = `
       select 
@@ -85,7 +105,7 @@ export class UserRepository {
       select 
         uc.username,
         uc.connection_id
-      from ${USERS_CONNECTIONS_TABLE}
+      from ${USERS_CONNECTIONS_TABLE} uc
       where uc.connection_id = $1
     `;
 
@@ -102,7 +122,7 @@ export class UserRepository {
     connectionId: string,
   ): Promise<void> {
     const sql = `
-      delete from ${USERS_CONNECTIONS_TABLE} uc where uc.connection_id = $1
+      delete from ${USERS_CONNECTIONS_TABLE} where connection_id = $1
     `;
 
     const queryConfig: QueryConfig = {
@@ -123,11 +143,13 @@ export class UserRepository {
       text: sql,
       values: [userStatus.username, userStatus.isOnline],
     };
+
+    await this.databaseService.query(queryConfig);
   }
 
   async updateUserStatus(userStatus: UserStatus): Promise<void> {
     const sql = `
-      update ${USERS_STATUSES_TABLE} us set us.is_online=$1 where us.username = $1
+      update ${USERS_STATUSES_TABLE} set is_online=$1 where username = $2
     `;
 
     const queryConfig: QueryConfig = {
