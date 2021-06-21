@@ -8,7 +8,8 @@ export class DatabaseService {
     this._client = new Pool(clientConfig);
 
     // Test connection
-    await this._client.connect();
+    const poolClient = await this._client.connect();
+    poolClient.release();
   }
 
   async query(queryConfig: QueryConfig): Promise<QueryResult> {
