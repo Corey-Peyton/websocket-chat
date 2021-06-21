@@ -6,7 +6,6 @@ import { MessageRepository } from './message.repository';
 export class MessageService {
   constructor(private readonly messageRepository: MessageRepository) {}
   async createMessage(message: Message) {
-    // Save message to the database
     await this.messageRepository.insertMessage(message);
   }
 

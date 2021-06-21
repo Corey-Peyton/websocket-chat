@@ -5,6 +5,7 @@ import {
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Message } from 'src/message/dto/Message';
@@ -22,6 +23,14 @@ export class WebsocketGateway
   @SubscribeMessage('message')
   handleMessage(@MessageBody() message: Message) {
     this.websocketService.onMessage(this.server, message);
+  }
+
+  @SubscribeMessage('botmessage')
+  handleBotMessage(
+    @MessageBody() message: Message,
+    @ConnectedSocket() client: Socket,
+  ) {
+    this.websocketService.handleBotMessage(client, message);
   }
 
   handleConnection(client: Socket) {

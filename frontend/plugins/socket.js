@@ -26,6 +26,13 @@ export default ({ store }, inject) => {
     })
   })
 
+  socket.on('bots', (bots) => {
+    store.commit({
+      type: 'interlocutor/loadBots',
+      bots,
+    })
+  })
+
   socket.on('interlocutor_connected', (interlocutor) => {
     store.commit({
       type: 'interlocutor/addInterlocutor',

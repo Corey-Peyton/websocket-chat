@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
+import { BotService } from 'src/bot/bot.service';
 import { Message } from 'src/message/dto/Message';
 import { MessageService } from 'src/message/message.service';
 import { User } from 'src/user/dto/User';
@@ -10,6 +11,7 @@ import { ISocketQuery } from './interfaces/SocketQuery';
 export class WebsocketService {
   constructor(
     protected readonly userService: UserService,
+    protected readonly botService: BotService,
     protected readonly messageService: MessageService,
   ) {}
 
@@ -52,9 +54,14 @@ export class WebsocketService {
       isOnline: true,
     });
 
+    socket.emit('bots', this.botService.getBots());
+
     // Send messages list
     const messages = await this.messageService.findUserMessages(user.username);
     socket.emit('messages', messages);
+
+    // Set up spam bot
+    this.botService.spamBotHandler(socket, user.username);
   }
 
   async onDisconnect(socket: Socket) {
@@ -78,5 +85,9 @@ export class WebsocketService {
 
     if (interlocutor)
       server.to(interlocutor.connectionId).emit('message', message);
+  }
+
+  async handleBotMessage(socket: Socket, message: Message) {
+    this.botService.handleBotMessage(socket, message);
   }
 }

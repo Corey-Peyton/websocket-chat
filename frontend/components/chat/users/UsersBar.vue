@@ -23,6 +23,7 @@ export default {
   },
   computed: {
     interlocutors() {
+      const bots = this.$store.state.interlocutor.bots
       let interlocutors = this.$store.state.interlocutor.interlocutors
 
       if (this.onlineFilter)
@@ -36,7 +37,7 @@ export default {
           return username.includes(this.usernameFilter.trim().toLowerCase())
         })
 
-      return interlocutors
+      return [...bots, ...interlocutors]
     },
   },
   methods: {

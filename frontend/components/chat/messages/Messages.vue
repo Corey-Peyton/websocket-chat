@@ -14,8 +14,11 @@ export default {
       const currentInterlocutorUsername =
         this.$store.state.interlocutor.currentInterlocutorUsername
 
+      const interlocutors = this.$store.state.interlocutor.interlocutors
+      const bots = this.$store.state.interlocutor.bots
+
       if (currentInterlocutorUsername)
-        return this.$store.state.interlocutor.interlocutors.find(
+        return [...interlocutors, ...bots].find(
           (i) => i.username === currentInterlocutorUsername
         )
 
@@ -47,7 +50,8 @@ export default {
         sentAt: new Date(),
       }
 
-      this.$socket.emit('message', message)
+      if (receiver.includes('bot')) this.$socket.emit('botmessage', message)
+      else this.$socket.emit('message', message)
       this.$store.dispatch({ type: 'message/addMessage', message })
     },
   },

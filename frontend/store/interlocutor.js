@@ -1,5 +1,6 @@
 export const state = () => ({
   interlocutors: [],
+  bots: [],
   currentInterlocutorUsername: null,
 })
 
@@ -25,5 +26,12 @@ export const mutations = {
         ? { ...interlocutor, isOnline: false }
         : interlocutor
     )
+  },
+  loadBots(state, payload) {
+    state.bots = payload.bots.map((bot) => ({
+      ...bot,
+      isBot: true,
+      isOnline: true,
+    }))
   },
 }
