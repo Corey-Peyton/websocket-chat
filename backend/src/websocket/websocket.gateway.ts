@@ -1,16 +1,16 @@
-import { 
+import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  OnGatewayConnection
-} from "@nestjs/websockets";
+  OnGatewayConnection,
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway()
 export class WebsocketGateway implements OnGatewayConnection {
   @WebSocketServer()
-  server: Server
+  server: Server;
 
   @SubscribeMessage('message')
   echoMessage(@MessageBody() data: any) {
