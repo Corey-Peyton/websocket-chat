@@ -41,6 +41,11 @@ export class UserService {
     return await this.userRepository.selectUserByConnectionId(connectionId);
   }
 
+  async findUserInterlocutors(username: string): Promise<User[]> {
+    const users = await this.userRepository.selectUsersWithStatus();
+    return users.filter((user) => user.username !== username);
+  }
+
   async createUserStatus(username: string): Promise<void> {
     const userStatus: UserStatus = {
       username,

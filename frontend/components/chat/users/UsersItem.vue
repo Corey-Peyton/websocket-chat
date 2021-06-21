@@ -4,8 +4,8 @@
     :class="isActiveInterlocutor ? 'users-item__active' : null"
     @click="onClick"
   >
-    <div class="users-item__avatar">
-      <img :src="avatar" />
+    <div class="users-item__avatar__container">
+      <img :src="avatar" class="users-item__avatar__img" />
       <img class="users-item__avatar__status-icon" :src="statusIcon" />
     </div>
     <div class="users-item__body">
@@ -63,9 +63,14 @@ export default {
   max-height: 70px;
 
   &__avatar {
-    height: 60px;
-    width: 60px;
-    position: relative;
+    &__container {
+      position: relative;
+    }
+
+    &__img {
+      height: 60px;
+      width: 60px;
+    }
 
     &__status-icon {
       height: 15px;

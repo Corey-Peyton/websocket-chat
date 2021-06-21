@@ -9,12 +9,14 @@ create table users (
 create table users_connections (
   username text,
   connection_id text not null,
+  constraint pk_user_connection primary key (username),
   constraint fk_user_connection_user foreign key (username) references users (username)
 );
 
 create table users_statuses (
   username text,
   is_online boolean not null,
+  constraint pk_user_status primary key (username),
   constraint fk_user_status_user foreign key (username) references users(username)
 )
 

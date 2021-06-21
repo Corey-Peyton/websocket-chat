@@ -35,6 +35,17 @@ export class WebsocketService {
 
     // Create user connection record
     await this.userService.createUserConnection(user.username, socket.id);
+
+    // Send interlocutors list
+    const interlocutors = await this.userService.findUserInterlocutors(
+      user.username,
+    );
+
+    socket.emit('interlocutors', interlocutors);
+    socket.broadcast.emit('interlocutor_connected', {
+      ...user,
+      isOnline: true,
+    });
   }
 
   async onDisconnect(socket: Socket) {
@@ -43,5 +54,10 @@ export class WebsocketService {
     await this.userService.updateUserStatus(user.username, false);
     // Delete user connection record
     await this.userService.deleteUserConnectionByConnectionId(socket.id);
+
+    socket.broadcast.emit('interlocutor_disconnected', {
+      ...user,
+      isOnline: false,
+    });
   }
 }

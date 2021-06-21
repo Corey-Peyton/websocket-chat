@@ -68,9 +68,9 @@ export class UserRepository {
   async selectUsersWithStatus(): Promise<User[]> {
     const sql = `
       select 
-        u.username,
-        u.avatar,
-        us.is_online
+        u.username as "username",
+        u.avatar as "avatar",
+        us.is_online as "isOnline"
       from ${USERS_TABLE} u
         inner join ${USERS_STATUSES_TABLE} us
           on u.username = us.username

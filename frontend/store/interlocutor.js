@@ -1,31 +1,27 @@
 export const state = () => ({
-  interlocutors: [
-    {
-      username: 'Reverse bot',
-      avatar: 'reversebot.png',
-      isOnline: true,
-    },
-    {
-      username: 'Echo bot',
-      avatar: 'echobot.png',
-      isOnline: true,
-    },
-    {
-      username: 'Spam bot',
-      avatar: 'spambot.png',
-      isOnline: true,
-    },
-    {
-      username: 'Ignore bot',
-      avatar: 'ignorebot.png',
-      isOnline: false,
-    },
-  ],
+  interlocutors: [],
   currentInterlocutorUsername: null,
 })
 
 export const mutations = {
   setCurrentInterlocutorUsername(state, payload) {
     state.currentInterlocutorUsername = payload.username
+  },
+  setInterlocutors(state, payload) {
+    state.interlocutors = payload.interlocutors
+  },
+  addInterlocutor(state, payload) {
+    state.interlocutors = [
+      ...state.interlocutors.filter(
+        (interlocutor) =>
+          interlocutor.username !== payload.interlocutor.username
+      ),
+      payload.interlocutor,
+    ]
+  },
+  deleteInterlocutor(state, payload) {
+    state.interlocutors = state.interlocutors.filter(
+      (interlocutor) => interlocutor.username !== payload.interlocutor.username
+    )
   },
 }
