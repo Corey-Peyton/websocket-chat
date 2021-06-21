@@ -3,11 +3,13 @@ import { ClientConfig } from 'pg';
 
 import { ConfigurationService } from './configuration.service';
 import { DatabaseService } from './database.service';
+import { IdentificatorService } from './identificator.service';
 
 @Global()
 @Module({
   providers: [
     ConfigurationService,
+    IdentificatorService,
     {
       provide: DatabaseService,
       inject: [ConfigurationService],
@@ -26,6 +28,6 @@ import { DatabaseService } from './database.service';
       },
     },
   ],
-  exports: [DatabaseService],
+  exports: [DatabaseService, IdentificatorService],
 })
 export class InfrastructureModule {}
