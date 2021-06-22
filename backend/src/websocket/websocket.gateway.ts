@@ -48,6 +48,7 @@ export class WebsocketGateway
     this.websocketService.onDisconnect(client);
   }
 
+  // Used to omit the whole server object transfer
   private sendTo(connections: string[], event: string, message: any): void {
     for (const connection of connections) {
       this.server.to(connection).emit(event, message);

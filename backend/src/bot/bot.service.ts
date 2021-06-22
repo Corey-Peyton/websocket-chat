@@ -4,15 +4,19 @@ import { MessageService } from 'src/message/message.service';
 import { UserService } from 'src/user/user.service';
 import { IBot } from './interfaces/IBot';
 import { bots } from './bots';
+import { UtilityService } from 'src/infrastructure/utility.service';
 
 @Injectable()
 export class BotService {
+  // Bots were hardcoded because of no need to query them for every user
   private _bots: IBot[] = bots;
+  // Map with callbacks to disable spam bot after user disconnect
   private _spamBotDisablers: Map<string, () => void> = new Map();
 
   constructor(
     private readonly messageService: MessageService,
     private readonly userService: UserService,
+    private readonly utilityService: UtilityService,
   ) {}
 
   getBots() {
@@ -77,11 +81,13 @@ export class BotService {
     sendTo: (connections: string[], event: string, message: any) => void,
     username: string,
   ) {
+    // Disabled spam bot flag
     let disabled = false;
     const messageContent = 'Hello from Spam bot!';
 
+    // Interval clojure
     const interval = () => {
-      const timeout = Math.round(Math.random() * (120 - 10) + 10) * 1000;
+      const timeout = this.utilityService.generateRandom(10, 120) * 1000;
       setTimeout(async () => {
         if (disabled) return;
         const connections =
@@ -102,6 +108,7 @@ export class BotService {
 
     interval();
 
+    // Disabler function will be called on user disconnect
     function disabler() {
       disabled = true;
     }

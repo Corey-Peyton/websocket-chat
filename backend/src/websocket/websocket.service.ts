@@ -15,7 +15,10 @@ export class WebsocketService {
     protected readonly messageService: MessageService,
   ) {}
 
-  async onConnect(socket: Socket, sendTo) {
+  async onConnect(
+    socket: Socket,
+    sendTo: (connections: string[], event: string, message: any) => void,
+  ) {
     const username = (socket.handshake.query as ISocketQuery).username;
     let user: User;
 

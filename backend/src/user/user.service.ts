@@ -1,5 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { IdentificatorService } from 'src/infrastructure/identificator.service';
+import { UtilityService } from 'src/infrastructure/utility.service';
 import { UserRepository } from './user.repository';
 import { User } from './dto/User';
 import { UserStatus } from './dto/UserStatus';
@@ -12,7 +12,7 @@ export class UserService implements OnApplicationBootstrap {
 
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly identificatorService: IdentificatorService,
+    private readonly utilityService: UtilityService,
   ) {}
 
   // Used if server was dropped before all connections severed
@@ -26,7 +26,7 @@ export class UserService implements OnApplicationBootstrap {
 
   async createUser(): Promise<User> {
     // Generate username
-    const username = this.identificatorService.generateAlphaNumeric(
+    const username = this.utilityService.generateAlphaNumeric(
       this._usernameLength,
     );
 
