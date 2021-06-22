@@ -14,11 +14,10 @@ export default {
       const currentInterlocutorUsername =
         this.$store.state.interlocutor.currentInterlocutorUsername
 
-      const interlocutors = this.$store.state.interlocutor.interlocutors
-      const bots = this.$store.state.interlocutor.bots
+      const interlocutors = this.$store.getters['interlocutor/interlocutors']
 
       if (currentInterlocutorUsername)
-        return [...interlocutors, ...bots].find(
+        return [...interlocutors].find(
           (i) => i.username === currentInterlocutorUsername
         )
 
@@ -39,18 +38,17 @@ export default {
   },
   methods: {
     sendMessage(content) {
-      const sender = this.$store.state.user.username
-      const receiver =
-        this.$store.state.interlocutor.currentInterlocutorUsername
+      const senderUsername = this.$store.state.user.username
+      const receiver = this.interlocutor
 
       const message = {
-        sender,
-        receiver,
+        sender: senderUsername,
+        receiver: receiver.username,
         content,
         sentAt: new Date(),
       }
 
-      if (receiver.includes('bot')) this.$socket.emit('botmessage', message)
+      if (receiver.isBot) this.$socket.emit('botmessage', message)
       else this.$socket.emit('message', message)
       this.$store.dispatch({ type: 'message/addMessage', message })
     },

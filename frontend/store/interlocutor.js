@@ -1,30 +1,29 @@
 export const state = () => ({
-  interlocutors: [],
+  users: [],
   bots: [],
   currentInterlocutorUsername: null,
 })
+
+export const getters = {
+  interlocutors: (state) => [...state.bots, ...state.users],
+}
 
 export const mutations = {
   setCurrentInterlocutorUsername(state, payload) {
     state.currentInterlocutorUsername = payload.username
   },
-  setInterlocutors(state, payload) {
-    state.interlocutors = payload.interlocutors
+  loadUsers(state, payload) {
+    state.users = [...payload.users]
   },
-  addInterlocutor(state, payload) {
-    state.interlocutors = [
-      ...state.interlocutors.filter(
-        (interlocutor) =>
-          interlocutor.username !== payload.interlocutor.username
-      ),
-      payload.interlocutor,
+  addUser(state, payload) {
+    state.users = [
+      ...state.users.filter((user) => user.username !== payload.user.username),
+      payload.user,
     ]
   },
   setOffline(state, payload) {
-    state.interlocutors = state.interlocutors.map((interlocutor) =>
-      interlocutor.username === payload.username
-        ? { ...interlocutor, isOnline: false }
-        : interlocutor
+    state.users = state.users.map((user) =>
+      user.username === payload.username ? { ...user, isOnline: false } : user
     )
   },
   loadBots(state, payload) {

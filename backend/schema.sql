@@ -28,9 +28,3 @@ create table messages (
   sent_at timestamptz not null,
   constraint pk_message primary key (id)
 );
-
-create table bots (
-  username text,
-  avatar text,
-  constraint pk_bot primary key (username)
-);

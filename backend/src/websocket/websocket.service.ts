@@ -44,12 +44,10 @@ export class WebsocketService {
     await this.userService.createUserConnection(user.username, socket.id);
 
     // Send interlocutors list
-    const interlocutors = await this.userService.findUserInterlocutors(
-      user.username,
-    );
+    const users = await this.userService.findUserInterlocutors(user.username);
 
-    socket.emit('interlocutors', interlocutors);
-    socket.broadcast.emit('interlocutor_connected', {
+    socket.emit('users', users);
+    socket.broadcast.emit('user_connected', {
       ...user,
       isOnline: true,
     });
@@ -71,7 +69,7 @@ export class WebsocketService {
     // Delete user connection record
     await this.userService.deleteUserConnectionByConnectionId(socket.id);
 
-    socket.broadcast.emit('interlocutor_disconnected', {
+    socket.broadcast.emit('user_disconnected', {
       ...user,
       isOnline: false,
     });

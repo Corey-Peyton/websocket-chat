@@ -19,10 +19,10 @@ export default ({ store }, inject) => {
     })
   })
 
-  socket.on('interlocutors', (interlocutors) => {
+  socket.on('users', (users) => {
     store.commit({
-      type: 'interlocutor/setInterlocutors',
-      interlocutors,
+      type: 'interlocutor/loadUsers',
+      users,
     })
   })
 
@@ -33,24 +33,29 @@ export default ({ store }, inject) => {
     })
   })
 
-  socket.on('interlocutor_connected', (interlocutor) => {
+  socket.on('user_connected', (user) => {
     store.commit({
-      type: 'interlocutor/addInterlocutor',
-      interlocutor,
+      type: 'interlocutor/addUser',
+      user,
     })
   })
 
-  socket.on('interlocutor_disconnected', (interlocutor) => {
+  socket.on('user_disconnected', (user) => {
     store.commit({
       type: 'interlocutor/setOffline',
-      username: interlocutor.username,
+      username: user.username,
     })
   })
 
   socket.on('messages', (messages) => {
+    const parsedMessages = messages.map((message) => ({
+      ...message,
+      sentAt: new Date(Date.parse(message.sentAt)),
+    }))
+
     store.commit({
       type: 'message/loadMessages',
-      messages,
+      messages: parsedMessages,
     })
   })
 

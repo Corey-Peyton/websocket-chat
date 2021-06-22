@@ -118,26 +118,6 @@ export class UserRepository {
     if (queryResult.rowCount) return queryResult.rows[0];
   }
 
-  async selectUserConnectionByConnectionId(
-    connectionId: string,
-  ): Promise<UserConnection> {
-    const sql = `
-      select 
-        uc.username as "username",
-        uc.connection_id as "connectionId"
-      from ${USERS_CONNECTIONS_TABLE} uc
-      where uc.connection_id = $1
-    `;
-
-    const queryConfig: QueryConfig = {
-      text: sql,
-      values: [connectionId],
-    };
-
-    const queryResult = await this.databaseService.query(queryConfig);
-    if (queryResult.rowCount) return queryResult.rows[0];
-  }
-
   async deleteUserConnectionByConnectionId(
     connectionId: string,
   ): Promise<void> {
@@ -187,6 +167,19 @@ export class UserRepository {
     const queryConfig: QueryConfig = {
       text: sql,
       values: [userStatus.isOnline, userStatus.username],
+    };
+
+    await this.databaseService.query(queryConfig);
+  }
+
+  async updateUsersStatus(isOnline: boolean): Promise<void> {
+    const sql = `
+      update ${USERS_STATUSES_TABLE} set is_online = $1
+    `;
+
+    const queryConfig = {
+      text: sql,
+      values: [isOnline],
     };
 
     await this.databaseService.query(queryConfig);

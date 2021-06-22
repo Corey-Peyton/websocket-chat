@@ -15,9 +15,13 @@ export class UserService implements OnApplicationBootstrap {
     private readonly identificatorService: IdentificatorService,
   ) {}
 
-  // Remove connections from the last session
+  // Used if server was dropped before all connections severed
   async onApplicationBootstrap() {
+    // Remove connections from the last session
     await this.userRepository.deleteUserConnections();
+
+    // Set all users status to offline
+    await this.userRepository.updateUsersStatus(false);
   }
 
   async createUser(): Promise<User> {
