@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Socket, Server } from 'socket.io';
+import { Socket } from 'socket.io';
 import { BotService } from 'src/bot/bot.service';
 import { Message } from 'src/message/dto/Message';
 import { MessageService } from 'src/message/message.service';
@@ -31,10 +31,15 @@ export class WebsocketService {
       user = await this.userService.createUser();
       await this.userService.createUserStatus(user.username);
     }
-    // User was found
-    else {
+
+    const userConnections: string[] =
+      await this.userService.findUserConnectionsByUsername(user.username);
+
+    // User's first tab
+    if (!userConnections.length) {
       // Set user online status
       await this.userService.updateUserStatus(user.username, true);
+      socket.broadcast.emit('user_connected', { ...user, isOnline: true });
     }
 
     // Send user data to the client
@@ -47,11 +52,6 @@ export class WebsocketService {
     const users = await this.userService.findUserInterlocutors(user.username);
 
     socket.emit('users', users);
-    socket.broadcast.emit('user_connected', {
-      ...user,
-      isOnline: true,
-    });
-
     socket.emit('bots', this.botService.getBots());
 
     // Send messages list
@@ -59,30 +59,43 @@ export class WebsocketService {
     socket.emit('messages', messages);
 
     // Set up spam bot
-    this.botService.spamBotHandler(socket, user.username);
+    // this.botService.spamBotHandler(socket, user.username);
   }
 
   async onDisconnect(socket: Socket) {
     const user = await this.userService.findUserByConnectionId(socket.id);
-    // Set user offline status
-    await this.userService.updateUserStatus(user.username, false);
-    // Delete user connection record
     await this.userService.deleteUserConnectionByConnectionId(socket.id);
 
-    socket.broadcast.emit('user_disconnected', {
-      ...user,
-      isOnline: false,
-    });
+    const userConnections: string[] =
+      await this.userService.findUserConnectionsByUsername(user.username);
+
+    if (!userConnections.length) {
+      // Set user offline status
+      await this.userService.updateUserStatus(user.username, false);
+      socket.broadcast.emit('user_disconnected', {
+        ...user,
+        isOnline: false,
+      });
+    }
   }
 
-  async onMessage(server: Server, message: Message) {
+  async onMessage(
+    socket: Socket,
+    message: Message,
+    sendTo: (connections: string[], event: string, message: any) => void,
+  ) {
     await this.messageService.createMessage(message);
-    const interlocutor = await this.userService.findUserConnectionByUsername(
-      message.receiver,
-    );
+    const connections: string[] =
+      await this.userService.findUserConnectionsByUsername(message.sender);
+    const interlocutors: string[] =
+      await this.userService.findUserConnectionsByUsername(message.receiver);
 
-    if (interlocutor)
-      server.to(interlocutor.connectionId).emit('message', message);
+    const sendList = [
+      ...connections.filter((uc) => uc !== socket.id),
+      ...interlocutors,
+    ];
+
+    if (interlocutors.length) sendTo(sendList, 'message', message);
   }
 
   async handleBotMessage(socket: Socket, message: Message) {

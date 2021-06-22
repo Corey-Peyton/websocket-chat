@@ -62,7 +62,7 @@ export default ({ store }, inject) => {
   socket.on('message', (message) => {
     store.commit({
       type: 'message/addMessage',
-      message,
+      message: { ...message, sentAt: new Date(message.sentAt) },
     })
   })
 

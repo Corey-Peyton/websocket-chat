@@ -9,7 +9,7 @@ create table users (
 create table users_connections (
   username text,
   connection_id text not null,
-  constraint pk_user_connection primary key (username),
+  constraint pk_user_connection primary key (username, connection_id),
   constraint fk_user_connection_user foreign key (username) references users (username)
 );
 

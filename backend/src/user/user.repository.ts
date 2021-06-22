@@ -98,9 +98,9 @@ export class UserRepository {
     await this.databaseService.query(queryConfig);
   }
 
-  async selectUserConnectionByUsername(
+  async selectUserConnectionsByUsername(
     username: string,
-  ): Promise<UserConnection> {
+  ): Promise<UserConnection[]> {
     const sql = `
     select 
       uc.username as "username",
@@ -115,7 +115,7 @@ export class UserRepository {
     };
 
     const queryResult = await this.databaseService.query(queryConfig);
-    if (queryResult.rowCount) return queryResult.rows[0];
+    return queryResult.rows;
   }
 
   async deleteUserConnectionByConnectionId(

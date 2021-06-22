@@ -73,10 +73,10 @@ export class UserService implements OnApplicationBootstrap {
     await this.userRepository.updateUserStatus(userStatus);
   }
 
-  async findUserConnectionByUsername(
-    username: string,
-  ): Promise<UserConnection> {
-    return await this.userRepository.selectUserConnectionByUsername(username);
+  async findUserConnectionsByUsername(username: string): Promise<string[]> {
+    const userConnections =
+      await this.userRepository.selectUserConnectionsByUsername(username);
+    return userConnections.map((uc) => uc.connectionId);
   }
 
   async createUserConnection(

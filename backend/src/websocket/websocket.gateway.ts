@@ -21,8 +21,11 @@ export class WebsocketGateway
   server: Server;
 
   @SubscribeMessage('message')
-  handleMessage(@MessageBody() message: Message) {
-    this.websocketService.onMessage(this.server, message);
+  handleMessage(
+    @MessageBody() message: Message,
+    @ConnectedSocket() client: Socket,
+  ) {
+    this.websocketService.onMessage(client, message, this.sendTo.bind(this));
   }
 
   @SubscribeMessage('botmessage')
@@ -39,5 +42,11 @@ export class WebsocketGateway
 
   handleDisconnect(client: Socket) {
     this.websocketService.onDisconnect(client);
+  }
+
+  private sendTo(connections: string[], event: string, message: any): void {
+    for (const connection of connections) {
+      this.server.to(connection).emit(event, message);
+    }
   }
 }
