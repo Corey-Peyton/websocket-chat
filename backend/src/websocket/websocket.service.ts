@@ -41,7 +41,10 @@ export class WebsocketService {
       await this.userService.updateUserStatus(user.username, true);
 
       // Notify other users about current user online status
-      socket.broadcast.emit('user_connected', { ...user, isOnline: true });
+      socket.broadcast.emit('interlocutor_connected', {
+        ...user,
+        isOnline: true,
+      });
 
       // Set up spam bot handler
       this.botService.spamBotHandler(sendTo, user.username);
@@ -55,7 +58,7 @@ export class WebsocketService {
     const interlocutors = await this.userService.findUserInterlocutors(
       user.username,
     );
-    socket.emit('users', interlocutors);
+    socket.emit('interlocutors', interlocutors);
 
     socket.emit('bots', this.botService.getBots());
 
@@ -76,7 +79,7 @@ export class WebsocketService {
     if (!connections.length) {
       // Set user offline status
       await this.userService.updateUserStatus(user.username, false);
-      socket.broadcast.emit('user_disconnected', {
+      socket.broadcast.emit('interlocutor_disconnected', {
         ...user,
         isOnline: false,
       });

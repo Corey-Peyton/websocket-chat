@@ -1,13 +1,17 @@
 import io from 'socket.io-client'
+import config from '../config'
 
 export default ({ store }, inject) => {
-  const socket = io('http://localhost:3000', {
+  const { socketServerHost, socketServerPort } = config
+  const url = `${socketServerHost}:${socketServerPort}`
+
+  const socket = io(url, {
     query: {
       username: localStorage.getItem('username'),
     },
-    forceNew: false,
   })
 
+  // User information
   socket.on('user', (user) => {
     const { username, avatar } = user
     localStorage.setItem('username', username)
@@ -19,13 +23,15 @@ export default ({ store }, inject) => {
     })
   })
 
-  socket.on('users', (users) => {
+  // Available interlocutors
+  socket.on('interlocutors', (users) => {
     store.commit({
       type: 'interlocutor/loadUsers',
       users,
     })
   })
 
+  // Bots
   socket.on('bots', (bots) => {
     store.commit({
       type: 'interlocutor/loadBots',
@@ -33,20 +39,23 @@ export default ({ store }, inject) => {
     })
   })
 
-  socket.on('user_connected', (user) => {
+  // New interlocutor connected
+  socket.on('interlocutor_connected', (user) => {
     store.commit({
       type: 'interlocutor/addUser',
       user,
     })
   })
 
-  socket.on('user_disconnected', (user) => {
+  // Interlocutor disconnected
+  socket.on('interlocutor_disconnected', (user) => {
     store.commit({
       type: 'interlocutor/setOffline',
       username: user.username,
     })
   })
 
+  // User's messages
   socket.on('messages', (messages) => {
     const parsedMessages = messages.map((message) => ({
       ...message,
@@ -59,6 +68,7 @@ export default ({ store }, inject) => {
     })
   })
 
+  // New message
   socket.on('message', (message) => {
     store.commit({
       type: 'message/addMessage',
@@ -66,5 +76,6 @@ export default ({ store }, inject) => {
     })
   })
 
+  // Make socket object available for every component to emit events
   inject('socket', socket)
 }
