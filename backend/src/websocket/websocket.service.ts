@@ -15,7 +15,7 @@ export class WebsocketService {
     protected readonly messageService: MessageService,
   ) {}
 
-  async onConnect(socket: Socket) {
+  async onConnect(socket: Socket, sendTo) {
     const username = (socket.handshake.query as ISocketQuery).username;
 
     let user: User;
@@ -40,6 +40,7 @@ export class WebsocketService {
       // Set user online status
       await this.userService.updateUserStatus(user.username, true);
       socket.broadcast.emit('user_connected', { ...user, isOnline: true });
+      this.botService.spamBotHandler(sendTo, user.username);
     }
 
     // Send user data to the client
@@ -57,9 +58,6 @@ export class WebsocketService {
     // Send messages list
     const messages = await this.messageService.findUserMessages(user.username);
     socket.emit('messages', messages);
-
-    // Set up spam bot
-    // this.botService.spamBotHandler(socket, user.username);
   }
 
   async onDisconnect(socket: Socket) {
@@ -76,6 +74,7 @@ export class WebsocketService {
         ...user,
         isOnline: false,
       });
+      this.botService.disableSpamBot(user.username);
     }
   }
 
@@ -98,7 +97,20 @@ export class WebsocketService {
     if (interlocutors.length) sendTo(sendList, 'message', message);
   }
 
-  async handleBotMessage(socket: Socket, message: Message) {
-    this.botService.handleBotMessage(socket, message);
+  async handleBotMessage(
+    socket: Socket,
+    message: Message,
+    sendTo: (connections: string[], event: string, message: any) => void,
+  ) {
+    const connections = await this.userService.findUserConnectionsByUsername(
+      message.sender,
+    );
+
+    const sendList = connections.filter(
+      (connection) => connection !== socket.id,
+    );
+
+    sendTo(sendList, 'message', message);
+    this.botService.handleBotMessage(message, sendTo);
   }
 }

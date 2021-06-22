@@ -33,11 +33,15 @@ export class WebsocketGateway
     @MessageBody() message: Message,
     @ConnectedSocket() client: Socket,
   ) {
-    this.websocketService.handleBotMessage(client, message);
+    this.websocketService.handleBotMessage(
+      client,
+      message,
+      this.sendTo.bind(this),
+    );
   }
 
   handleConnection(client: Socket) {
-    this.websocketService.onConnect(client);
+    this.websocketService.onConnect(client, this.sendTo.bind(this));
   }
 
   handleDisconnect(client: Socket) {
