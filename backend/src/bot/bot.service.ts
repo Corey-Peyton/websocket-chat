@@ -3,16 +3,11 @@ import { Message } from 'src/message/dto/Message';
 import { MessageService } from 'src/message/message.service';
 import { UserService } from 'src/user/user.service';
 import { IBot } from './interfaces/IBot';
+import { bots } from './bots';
 
 @Injectable()
 export class BotService {
-  private _bots: IBot[] = [
-    { username: 'Echo bot', avatar: 'echobot.png' },
-    { username: 'Reverse bot', avatar: 'reversebot.png' },
-    { username: 'Spam bot', avatar: 'spambot.png' },
-    { username: 'Ignore bot', avatar: 'ignorebot.png' },
-  ];
-
+  private _bots: IBot[] = bots;
   private _spamBotDisablers: Map<string, () => void> = new Map();
 
   constructor(
@@ -38,44 +33,6 @@ export class BotService {
         this.reverseBotHandler(message, sendTo);
         break;
     }
-  }
-
-  async spamBotHandler(sendTo, username: string) {
-    const messageContent = 'Hello from Spam bot!';
-    const timeout = Math.round(Math.random() * (120 - 10) + 10) * 1000;
-
-    let disabled = false;
-
-    function disabler() {
-      disabled = true;
-    }
-
-    const interval = () => {
-      setTimeout(async () => {
-        if (disabled) return;
-
-        const connections =
-          await this.userService.findUserConnectionsByUsername(username);
-
-        const botMessage: Message = {
-          sender: 'Spam bot',
-          receiver: username,
-          content: messageContent,
-          sentAt: new Date(),
-        };
-
-        await this.messageService.createMessage(botMessage);
-        sendTo(connections, 'message', botMessage);
-        interval();
-      }, timeout);
-    };
-
-    interval();
-    this._spamBotDisablers.set(username, disabler);
-  }
-
-  disableSpamBot(username: string): void {
-    this._spamBotDisablers.get(username)();
   }
 
   private async echoBotHandler(
@@ -114,5 +71,44 @@ export class BotService {
       await this.messageService.createMessage(botMessage);
       sendTo(receiverConnections, 'message', botMessage);
     }, 3000);
+  }
+
+  async spamBotHandler(
+    sendTo: (connections: string[], event: string, message: any) => void,
+    username: string,
+  ) {
+    let disabled = false;
+    const messageContent = 'Hello from Spam bot!';
+
+    const interval = () => {
+      const timeout = Math.round(Math.random() * (120 - 10) + 10) * 1000;
+      setTimeout(async () => {
+        if (disabled) return;
+        const connections =
+          await this.userService.findUserConnectionsByUsername(username);
+
+        const botMessage: Message = {
+          sender: 'Spam bot',
+          receiver: username,
+          content: messageContent,
+          sentAt: new Date(),
+        };
+
+        await this.messageService.createMessage(botMessage);
+        sendTo(connections, 'message', botMessage);
+        interval();
+      }, timeout);
+    };
+
+    interval();
+
+    function disabler() {
+      disabled = true;
+    }
+    this._spamBotDisablers.set(username, disabler);
+  }
+
+  disableSpamBot(username: string): void {
+    this._spamBotDisablers.get(username)();
   }
 }
