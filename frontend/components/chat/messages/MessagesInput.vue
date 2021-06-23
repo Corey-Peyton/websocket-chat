@@ -34,9 +34,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/variables.scss';
 .messages-input-container {
   display: flex;
-  margin-top: 15px;
+  margin: 15px 0;
   padding: 0 30px 0 10px;
   width: 100%;
 
@@ -67,6 +68,15 @@ export default {
     color: #fff;
     font-family: 'OpenSans', sans-serif;
     font-size: 14px;
+  }
+}
+
+@media screen and (max-width: $md) {
+  .messages-input-container {
+    padding: 0 10px;
+    &__input {
+      min-width: 0;
+    }
   }
 }
 </style>

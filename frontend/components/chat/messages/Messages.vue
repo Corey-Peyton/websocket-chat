@@ -58,9 +58,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/variables.scss';
 .messages {
   height: 100%;
   width: 100%;
   min-width: 880px;
+}
+
+@media screen and (max-width: $md) {
+  .messages {
+    min-width: 0;
+    width: 100%;
+  }
 }
 </style>

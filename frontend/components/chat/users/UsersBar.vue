@@ -51,10 +51,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/variables.scss';
 .users-bar {
   background-color: #fff;
   min-width: 260px;
   max-width: 350px;
   height: 100%;
+}
+
+@media screen and (max-width: $md) {
+  .users-bar {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
 }
 </style>

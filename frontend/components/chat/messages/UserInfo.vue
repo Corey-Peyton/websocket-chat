@@ -6,12 +6,12 @@
         <span class="user-info__content__name">{{
           interlocutor.username
         }}</span>
-        <span class="user-info__content__description"
-          >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae
-          aut veniam maxime consectetur laboriosam? Numquam velit dignissimos
-          qui eius repellendus natus ipsum, iusto soluta error totam, alias
-          corrupti pariatur aliquid?</span
-        >
+        <span class="user-info__content__description">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque
+          tempore ea at! Officia pariatur est quae sapiente unde officiis
+          reprehenderit, tenetur alias placeat modi? Magni culpa beatae vitae
+          consequuntur fuga.
+        </span>
       </section>
     </div>
   </div>
@@ -37,11 +37,14 @@ export default {
 <style lang="scss" scoped>
 .user-info {
   display: flex;
+  height: 170px;
 
   &__avatar {
     height: 170px;
     width: 170px;
   }
+
+  overflow: hidden;
 
   &__content {
     margin: 20px;
@@ -55,6 +58,7 @@ export default {
 
     &__description {
       width: 100%;
+      line-height: 1.45em;
       font-size: 16px;
       font-family: 'OpenSans', sans-serif;
       color: #354149;

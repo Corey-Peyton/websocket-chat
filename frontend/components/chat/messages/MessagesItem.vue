@@ -55,6 +55,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/variables.scss';
+
 @mixin message(
   $isUser: false,
   $float: left,
@@ -127,5 +129,15 @@ export default {
     $usernameColor: #703a18,
     $timeColor: #bba08e
   );
+}
+
+@media screen and (max-width: $md) {
+  .interlocutor-message {
+    width: 80%;
+  }
+
+  .user-message {
+    width: 80%;
+  }
 }
 </style>
