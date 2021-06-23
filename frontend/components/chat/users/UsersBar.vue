@@ -54,7 +54,7 @@ export default {
 @import '@/assets/variables.scss';
 .users-bar {
   background-color: #fff;
-  min-width: 260px;
+  min-width: 350px;
   max-width: 350px;
   height: 100%;
 }

@@ -1,7 +1,9 @@
 <template>
   <div class="user-info-container">
     <div v-if="interlocutor" class="user-info">
-      <img class="user-info__avatar" :src="avatar" alt="User avatar" />
+      <div class="user-info__avatar__container">
+        <img :src="avatar" alt="User avatar" />
+      </div>
       <section class="user-info__content">
         <span class="user-info__content__name">{{
           interlocutor.username
@@ -39,9 +41,14 @@ export default {
   display: flex;
   height: 170px;
 
-  &__avatar {
+  &__avatar__container {
     height: 170px;
     width: 170px;
+
+    img {
+      height: inherit;
+      width: inherit;
+    }
   }
 
   overflow: hidden;

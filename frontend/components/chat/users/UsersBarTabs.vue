@@ -2,14 +2,14 @@
   <section class="users-bar-tabs">
     <button
       class="users-bar-tabs__button"
-      :class="onlineFilter ? null : 'users-bar-tabs__button-inactive'"
+      :class="!onlineFilter && 'users-bar-tabs__button-inactive'"
       @click="$emit('setOnlineFilter', true)"
     >
       Online
     </button>
     <button
       class="users-bar-tabs__button"
-      :class="onlineFilter ? 'users-bar-tabs__button-inactive' : null"
+      :class="onlineFilter && 'users-bar-tabs__button-inactive'"
       @click="$emit('setOnlineFilter', false)"
     >
       All

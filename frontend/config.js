@@ -1,4 +1,4 @@
 export default {
-  socketServerHost: 'http://localhost',
+  socketServerHost: 'ws://localhost',
   socketServerPort: 3000,
 }
