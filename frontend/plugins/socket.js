@@ -13,7 +13,7 @@ export default ({ store }, inject) => {
 
   // User information
   socket.on('user', (user) => {
-    const { username, avatar } = user
+    const { username } = user
     localStorage.setItem('username', username)
 
     store.commit({

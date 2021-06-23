@@ -51,7 +51,7 @@ export default {
 
       if (receiver.isBot) this.$socket.emit('botmessage', message)
       else this.$socket.emit('message', message)
-      this.$store.dispatch({ type: 'message/addMessage', message })
+      this.$store.commit({ type: 'message/addMessage', message })
     },
   },
 }

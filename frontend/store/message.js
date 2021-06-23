@@ -10,12 +10,3 @@ export const mutations = {
     state.messages = [...state.messages, payload.message]
   },
 }
-
-export const actions = {
-  addMessage({ commit }, payload) {
-    commit({
-      type: 'addMessage',
-      message: payload.message,
-    })
-  },
-}
