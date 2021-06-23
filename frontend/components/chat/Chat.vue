@@ -1,7 +1,7 @@
 <template>
   <div class="chat">
-    <chat-messages class="chat__messages" />
-    <chat-users-bar class="chat__users" />
+    <chat-messages />
+    <chat-users-bar />
   </div>
 </template>
 
