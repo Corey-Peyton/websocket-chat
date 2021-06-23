@@ -21,6 +21,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/variables.scss';
+
 .users-list {
   margin-top: 5px;
   display: flex;
@@ -28,5 +30,11 @@ export default {
   align-content: flex-start;
   height: 530px;
   overflow-y: auto;
+}
+
+@media screen and (max-width: $md) {
+  .users-list {
+    height: 200px;
+  }
 }
 </style>
