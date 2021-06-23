@@ -27,13 +27,14 @@ export default {
     messages() {
       const interlocutorUsername =
         this.$store.state.interlocutor.currentInterlocutorUsername
+
       return this.$store.state.message.messages
         .filter(
           (message) =>
             message.sender === interlocutorUsername ||
             message.receiver === interlocutorUsername
         )
-        .sort((a, b) => a.sentAt < b.sentAt)
+        .sort((a, b) => a.sentAt - b.sentAt)
     },
   },
   methods: {

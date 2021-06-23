@@ -62,7 +62,7 @@ export default {
   $usernameColor: #203245,
   $timeColor: #9aa8b7
 ) {
-  height: 80px;
+  min-height: 80px;
   width: 640px;
   margin: 0 20px 20px 20px;
   float: $float;
@@ -88,13 +88,14 @@ export default {
   }
 
   &__body {
-    height: 45px;
+    min-height: 45px;
     padding: 15px;
     background-color: #f4f8fb;
     position: relative;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     font-family: 'OpenSans-Semibold', sans-serif;
+    overflow-wrap: break-word;
 
     &::after {
       content: '';

@@ -59,7 +59,7 @@ export default ({ store }, inject) => {
   socket.on('messages', (messages) => {
     const parsedMessages = messages.map((message) => ({
       ...message,
-      sentAt: new Date(Date.parse(message.sentAt)),
+      sentAt: new Date(message.sentAt),
     }))
 
     store.commit({

@@ -23,6 +23,9 @@ export default {
   },
   methods: {
     sendMessage() {
+      // Empty message is not permited
+      if (!this.messageContent.trim()) return
+
       this.$emit('sendMessage', this.messageContent)
       this.messageContent = ''
     },

@@ -6,7 +6,12 @@
         <span class="user-info__content__name">{{
           interlocutor.username
         }}</span>
-        <span class="user-info__content__description">Some description</span>
+        <span class="user-info__content__description"
+          >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae
+          aut veniam maxime consectetur laboriosam? Numquam velit dignissimos
+          qui eius repellendus natus ipsum, iusto soluta error totam, alias
+          corrupti pariatur aliquid?</span
+        >
       </section>
     </div>
   </div>

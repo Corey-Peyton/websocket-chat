@@ -14,6 +14,7 @@ export default {
 .navbar {
   position: relative;
   height: 80px;
+  width: 100%;
   background-color: #fff;
 
   &__title {

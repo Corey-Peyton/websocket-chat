@@ -54,6 +54,7 @@ export default {
 .users-bar {
   background-color: #fff;
   min-width: 260px;
+  max-width: 350px;
   height: 100%;
 }
 </style>
