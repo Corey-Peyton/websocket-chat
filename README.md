@@ -19,7 +19,7 @@
 * Run `npm start` to start nuxt server
 
 ## Server /backend
-## Install
+### Install
 * Run `npm install` to install server dependencies
 * Configure `.env` file
   * `PSQL_HOST` - Database host [DEFAULT] = `localhost`
@@ -29,5 +29,5 @@
   * `PSQL_PASSWORD` - Database user password
 * Run `schema.sql` script to install the database schema
 
-## Start
+### Start
 * Run `npm run start:prod` to start the Nest server
