@@ -30,4 +30,5 @@
 * Run `schema.sql` script to install the database schema
 
 ### Start
+* Run `npm run build` to build the application
 * Run `npm run start:prod` to start the Nest server
