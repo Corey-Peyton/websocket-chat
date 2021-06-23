@@ -15,7 +15,6 @@ export default ({ store }, inject) => {
   socket.on('user', (user) => {
     const { username, avatar } = user
     localStorage.setItem('username', username)
-    localStorage.setItem('avatar', avatar)
 
     store.commit({
       type: 'user/setUsername',
