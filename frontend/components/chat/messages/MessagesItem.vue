@@ -65,8 +65,7 @@ export default {
   $timeColor: #9aa8b7
 ) {
   min-height: 80px;
-  min-width: 640px;
-  max-width: 80%;
+  width: 80%;
   margin: 0 20px 20px 20px;
   float: $float;
 
@@ -135,12 +134,10 @@ export default {
 @media screen and (max-width: $md) {
   .interlocutor-message {
     min-width: 0;
-    width: 80%;
   }
 
   .user-message {
     min-width: 0;
-    width: 80%;
   }
 }
 </style>
