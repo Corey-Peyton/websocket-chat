@@ -65,7 +65,8 @@ export default {
   $timeColor: #9aa8b7
 ) {
   min-height: 80px;
-  width: 640px;
+  min-width: 640px;
+  max-width: 80%;
   margin: 0 20px 20px 20px;
   float: $float;
 
