@@ -134,10 +134,12 @@ export default {
 
 @media screen and (max-width: $md) {
   .interlocutor-message {
+    min-width: 0;
     width: 80%;
   }
 
   .user-message {
+    min-width: 0;
     width: 80%;
   }
 }

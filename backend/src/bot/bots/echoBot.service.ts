@@ -15,10 +15,10 @@ export class EchoBotHandler {
     message: Message,
     sendTo: (connections: string[], event: string, message: any) => void,
   ) {
-    this.messageService.createMessage(message);
-
-    const receiverConnections =
-      await this.userService.findUserConnectionsByUsername(message.sender);
+    const [receiverConnections] = await Promise.all([
+      this.userService.findUserConnectionsByUsername(message.sender),
+      this.messageService.createMessage(message),
+    ]);
 
     const botMessage: Message = {
       sender: botTypes.echoBot,

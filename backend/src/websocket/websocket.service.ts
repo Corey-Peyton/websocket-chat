@@ -28,8 +28,10 @@ export class WebsocketService {
 
     // User was not found or username was null
     if (!user) {
-      user = await this.userService.createUser();
-      await this.userService.createUserStatus(user.username);
+      [user] = await Promise.all([
+        this.userService.createUser(),
+        this.userService.createUserStatus(user.username),
+      ]);
     }
 
     // Get other user connections with the same username
@@ -50,42 +52,42 @@ export class WebsocketService {
       this.botService.startSpamBot(user.username, sendTo);
     }
 
-    // Create user connection record
-    await this.userService.createUserConnection(user.username, socket.id);
+    const [interlocutors, messages] = await Promise.all([
+      this.userService.findUserInterlocutors(user.username),
+      this.messageService.findUserMessages(user.username),
+      // Create user connection record
+      this.userService.createUserConnection(user.username, socket.id),
+    ]);
 
     socket.emit('user', user);
-
-    const interlocutors = await this.userService.findUserInterlocutors(
-      user.username,
-    );
     socket.emit('interlocutors', interlocutors);
-
     socket.emit('bots', this.botService.getBots());
-
-    const messages = await this.messageService.findUserMessages(user.username);
     socket.emit('messages', messages);
   }
 
   async onDisconnect(socket: Socket) {
-    const user = await this.userService.findUserByConnectionId(socket.id);
+    const [user] = await Promise.all([
+      this.userService.findUserByConnectionId(socket.id),
+      this.userService.deleteUserConnectionByConnectionId(socket.id),
+    ]);
 
-    await this.userService.deleteUserConnectionByConnectionId(socket.id);
+    const { username } = user;
 
     // Get connections with the same username
     const connections: string[] =
-      await this.userService.findUserConnectionsByUsername(user.username);
+      await this.userService.findUserConnectionsByUsername(username);
 
     // The last username connection
     if (!connections.length) {
       // Set user offline status
-      await this.userService.updateUserStatus(user.username, false);
+      await this.userService.updateUserStatus(username, false);
       socket.broadcast.emit('interlocutor_disconnected', {
         ...user,
         isOnline: false,
       });
 
       // Disable spam bot for the current user
-      this.botService.disableSpamBot(user.username);
+      this.botService.disableSpamBot(username);
     }
   }
 
@@ -94,15 +96,13 @@ export class WebsocketService {
     message: Message,
     sendTo: (connections: string[], event: string, message: any) => void,
   ) {
-    await this.messageService.createMessage(message);
-
-    // Get connections with the same username
-    const connections: string[] =
-      await this.userService.findUserConnectionsByUsername(message.sender);
-
-    // Find connections with the receiver username
-    const interlocutors: string[] =
-      await this.userService.findUserConnectionsByUsername(message.receiver);
+    const [connections, interlocutors] = await Promise.all([
+      // Get connections with the same username
+      this.userService.findUserConnectionsByUsername(message.sender),
+      // Find connections with the receiver username
+      this.userService.findUserConnectionsByUsername(message.receiver),
+      this.messageService.createMessage(message),
+    ]);
 
     const sendList = [
       ...connections.filter((uc) => uc !== socket.id),

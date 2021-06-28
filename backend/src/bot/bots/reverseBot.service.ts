@@ -15,7 +15,7 @@ export class ReverseBotHandler {
     message: Message,
     sendTo: (connections: string[], event: string, message: any) => void,
   ) {
-    this.messageService.createMessage(message);
+    await this.messageService.createMessage(message);
 
     const reversedContent = message.content.split('').reverse().join('');
     setTimeout(async () => {
