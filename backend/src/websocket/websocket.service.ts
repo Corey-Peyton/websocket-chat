@@ -47,7 +47,7 @@ export class WebsocketService {
       });
 
       // Set up spam bot handler
-      this.botService.spamBotHandler(sendTo, user.username);
+      this.botService.startSpamBot(user.username, sendTo);
     }
 
     // Create user connection record
@@ -127,6 +127,6 @@ export class WebsocketService {
     );
 
     sendTo(sendList, 'message', message);
-    this.botService.handleBotMessage(message, sendTo);
+    this.botService.handleMessage(message, sendTo);
   }
 }

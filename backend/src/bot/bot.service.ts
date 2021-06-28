@@ -1,121 +1,49 @@
 import { Injectable } from '@nestjs/common';
 import { Message } from 'src/message/dto/Message';
-import { MessageService } from 'src/message/message.service';
-import { UserService } from 'src/user/user.service';
 import { IBot } from './interfaces/IBot';
 import { bots } from './bots';
-import { UtilityService } from 'src/infrastructure/utility.service';
+import { botTypes } from './types/botTypes';
+import { EchoBotHandler } from './bots/echoBot.service';
+import { ReverseBotHandler } from './bots/reverseBot.service';
+import { SpamBotHandler } from './bots/spamBot.service';
 
 @Injectable()
 export class BotService {
   // Bots were hardcoded because of no need to query them for every user
   private _bots: IBot[] = bots;
-  // Map with callbacks to disable spam bot after user disconnect
-  private _spamBotDisablers: Map<string, () => void> = new Map();
 
   constructor(
-    private readonly messageService: MessageService,
-    private readonly userService: UserService,
-    private readonly utilityService: UtilityService,
+    private readonly echoBotHandler: EchoBotHandler,
+    private readonly reverseBotHandler: ReverseBotHandler,
+    private readonly spamBotHandler: SpamBotHandler,
   ) {}
 
   getBots() {
     return this._bots;
   }
 
-  async handleBotMessage(
+  async handleMessage(
     message: Message,
     sendTo: (connections: string[], event: string, message: any) => void,
   ) {
-    this.messageService.createMessage(message);
-
     switch (message.receiver) {
-      case 'Echo bot':
-        await this.echoBotHandler(message, sendTo);
+      case botTypes.echoBot:
+        await this.echoBotHandler.handleMessage(message, sendTo);
         break;
-      case 'Reverse bot':
-        this.reverseBotHandler(message, sendTo);
+      case botTypes.reverseBot:
+        this.reverseBotHandler.handleMessage(message, sendTo);
         break;
     }
   }
 
-  private async echoBotHandler(
-    message: Message,
-    sendTo: (connections: string[], event: string, message: any) => void,
-  ) {
-    const receiverConnections =
-      await this.userService.findUserConnectionsByUsername(message.sender);
-
-    const botMessage: Message = {
-      sender: 'Echo bot',
-      receiver: message.sender,
-      content: message.content,
-      sentAt: new Date(),
-    };
-
-    await this.messageService.createMessage(botMessage);
-    sendTo(receiverConnections, 'message', botMessage);
-  }
-
-  private reverseBotHandler(
-    message,
-    sendTo: (connections: string[], event: string, message: any) => void,
-  ) {
-    const reversedContent = message.content.split('').reverse().join('');
-    setTimeout(async () => {
-      const receiverConnections =
-        await this.userService.findUserConnectionsByUsername(message.sender);
-      const botMessage: Message = {
-        sender: 'Reverse bot',
-        receiver: message.sender,
-        content: reversedContent,
-        sentAt: new Date(),
-      };
-
-      await this.messageService.createMessage(botMessage);
-      sendTo(receiverConnections, 'message', botMessage);
-    }, 3000);
-  }
-
-  async spamBotHandler(
-    sendTo: (connections: string[], event: string, message: any) => void,
+  startSpamBot(
     username: string,
+    sendTo: (connections: string[], event: string, message: any) => void,
   ) {
-    // Disabled spam bot flag
-    let disabled = false;
-    const messageContent = 'Hello from Spam bot!';
-
-    // Interval clojure
-    const interval = () => {
-      const timeout = this.utilityService.generateRandom(10, 120) * 1000;
-      setTimeout(async () => {
-        if (disabled) return;
-        const connections =
-          await this.userService.findUserConnectionsByUsername(username);
-
-        const botMessage: Message = {
-          sender: 'Spam bot',
-          receiver: username,
-          content: messageContent,
-          sentAt: new Date(),
-        };
-
-        await this.messageService.createMessage(botMessage);
-        sendTo(connections, 'message', botMessage);
-        interval();
-      }, timeout);
-    };
-
-    interval();
-
-    // Disabler function will be called on user disconnect
-    function disabler() {
-      disabled = true;
-    }
-    this._spamBotDisablers.set(username, disabler);
+    this.spamBotHandler.start(username, sendTo);
   }
 
-  disableSpamBot(username: string): void {
-    this._spamBotDisablers.get(username)();
+  disableSpamBot(username: string) {
+    this.spamBotHandler.disable(username);
   }
 }
