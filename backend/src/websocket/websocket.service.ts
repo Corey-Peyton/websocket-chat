@@ -28,10 +28,8 @@ export class WebsocketService {
 
     // User was not found or username was null
     if (!user) {
-      [user] = await Promise.all([
-        this.userService.createUser(),
-        this.userService.createUserStatus(user.username),
-      ]);
+      user = await this.userService.createUser();
+      await this.userService.createUserStatus(user.username);
     }
 
     // Get other user connections with the same username
