@@ -1,4 +1,4 @@
-# Websocket chat v2.0
+# Websocket-chat
 
 ## Technologies:
 * Nuxt.js
